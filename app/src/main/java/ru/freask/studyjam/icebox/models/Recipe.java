@@ -23,9 +23,41 @@ public class Recipe {
     @DatabaseField
     int yield;
     @DatabaseField
-    String summary;
-    @DatabaseField
     Float calories;
 
-    public Recipe() {}
+    public Recipe() {
+
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public int getYield() {
+        return yield;
+    }
+
+    public Float getCalories() {
+        return calories;
+    }
 }

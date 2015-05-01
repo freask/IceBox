@@ -14,7 +14,8 @@ import roboguice.util.temp.Ln;
  * Created by Alexander.Kashin01 on 30.04.2015.
  */
 public class ClientService extends RetrofitGsonSpiceService {
-    public static final String API_URL = "https://api.edamam.com";
+    //public static final String API_URL = "https://api.edamam.com";
+    public static final String API_URL = "http://appiwish.com";
     public static final String API_APP_ID = "72a4f9b7";
     public static final String API_APP_KEY = "ea9bfbb253b89e3b8fee9dcf6189351c";
     private static final String DB_NAME = "icebox.db";
@@ -28,7 +29,7 @@ public class ClientService extends RetrofitGsonSpiceService {
     @Override
     public void onCreate() {
         super.onCreate();
-        Ln.getConfig().setLoggingLevel(Log.ERROR);
+        //Ln.getConfig().setLoggingLevel(Log.VERBOSE);
         addRetrofitInterface(RecipeService.class);
     }
 }

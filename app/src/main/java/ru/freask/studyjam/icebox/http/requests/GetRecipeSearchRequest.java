@@ -13,9 +13,9 @@ import ru.freask.studyjam.icebox.models.RecipeSearch;
  * Created by Alexander.Kashin01 on 30.04.2015.
  */
 public class GetRecipeSearchRequest extends RetrofitSpiceRequest<RecipeSearch, RecipeService> {
-    String query;
+    public String query;
 
-    public GetRecipeSearchRequest(String query) {
+    public GetRecipeSearchRequest() {
         super(RecipeSearch.class, RecipeService.class);
         this.query = query;
     }

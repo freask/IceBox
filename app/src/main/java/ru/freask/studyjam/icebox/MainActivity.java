@@ -12,11 +12,12 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import ru.freask.studyjam.icebox.http.requests.GetRecipeSearchRequest;
 import ru.freask.studyjam.icebox.models.Recipe;
 import ru.freask.studyjam.icebox.models.RecipeList;
+import ru.freask.studyjam.icebox.models.RecipeObj;
 import ru.freask.studyjam.icebox.models.RecipeSearch;
 
 public class MainActivity extends BaseActivity {
 
-    private ArrayAdapter<Recipe> recipeListAdapter;
+    private ArrayAdapter<String> recipeListAdapter;
     GetRecipeSearchRequest recipeSearchRequest;
     private ListView recipeListView;
     String recipeQuery;
@@ -28,17 +29,17 @@ public class MainActivity extends BaseActivity {
         initRequests();
 
         recipeListView = (ListView) findViewById(R.id.listViewRecipes);
-        recipeListAdapter = new ArrayAdapter<Recipe>(this, android.R.layout.simple_list_item_1);
+        recipeListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         recipeListView.setAdapter(recipeListAdapter);
 
-        recipeQuery = "meat";
+        recipeSearchRequest.query = "meat";
         int version = 2;
-        getSpiceManager().execute(recipeSearchRequest, "recipeList_" + version + "_" + recipeQuery, DurationInMillis.ONE_WEEK, new RecipeListRequestListener());
+        getSpiceManager().execute(recipeSearchRequest, "recipeList_" + version + "_" + recipeSearchRequest.query, DurationInMillis.ONE_WEEK, new RecipeListRequestListener());
 
     }
 
     private void initRequests() {
-        recipeSearchRequest = new GetRecipeSearchRequest(recipeQuery);
+        recipeSearchRequest = new GetRecipeSearchRequest();
     }
 
     public final class RecipeListRequestListener implements
@@ -61,10 +62,10 @@ public class MainActivity extends BaseActivity {
             }
         }
 
-        private void fillProductList(RecipeList recipes) {
+        private void fillProductList(RecipeList recipe_objs) {
             recipeListAdapter.clear();
-            for (Recipe recipe : recipes) {
-                recipeListAdapter.add(recipe);
+            for (RecipeObj recipe_obj : recipe_objs) {
+                recipeListAdapter.add(recipe_obj.getRecipe().getLabel());
             }
         }
     }
