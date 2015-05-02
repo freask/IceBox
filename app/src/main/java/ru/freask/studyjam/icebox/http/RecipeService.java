@@ -11,9 +11,9 @@ import ru.freask.studyjam.icebox.models.RecipeSearch;
  * Created by Alexander.Kashin01 on 30.04.2015.
  */
 public interface RecipeService {
-    //@GET("/search")
-    //RecipeSearch recipeSearch(@Query("app_id") String app_id, @Query("app_key") String app_key, @Query("q") String query);
+    @GET("/search")
+    RecipeSearch recipeSearch(@Query("app_id") String app_id, @Query("app_key") String app_key, @Query("q") String query);
 
     @GET("/meat.php")
-    RecipeSearch recipeSearch(@Query("app_id") String app_id, @Query("app_key") String app_key, @Query("q") String query);
+    RecipeSearch recipeSearchDebug(@Query("app_id") String app_id, @Query("app_key") String app_key, @Query("q") String query);
 }

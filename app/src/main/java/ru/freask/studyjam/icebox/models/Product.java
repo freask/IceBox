@@ -11,14 +11,22 @@ import java.util.ArrayList;
 @DatabaseTable(tableName = "Product")
 public class Product {
 
+
+
     @DatabaseField(generatedId = true)
     private Long id;
     @DatabaseField
     public String name;
     @DatabaseField
     public int count;
+    @DatabaseField
+    public int like_count;
 
     @SuppressWarnings("serial")
     public static class List extends ArrayList<Product> {
+    }
+
+    public Long getId() {
+        return id;
     }
 }

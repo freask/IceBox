@@ -1,78 +1,191 @@
 package ru.freask.studyjam.icebox;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
-import com.octo.android.robospice.persistence.DurationInMillis;
-import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.request.listener.RequestListener;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 
-import ru.freask.studyjam.icebox.http.requests.GetRecipeSearchRequest;
-import ru.freask.studyjam.icebox.models.Recipe;
-import ru.freask.studyjam.icebox.models.RecipeList;
-import ru.freask.studyjam.icebox.models.RecipeObj;
-import ru.freask.studyjam.icebox.models.RecipeSearch;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends BaseActivity {
+import ru.freask.studyjam.icebox.adapters.ProductAdapter;
+import ru.freask.studyjam.icebox.db.OrmHelper;
+import ru.freask.studyjam.icebox.db.ProductDao;
+import ru.freask.studyjam.icebox.models.Product;
 
-    private ArrayAdapter<String> recipeListAdapter;
-    GetRecipeSearchRequest recipeSearchRequest;
-    private ListView recipeListView;
-    String recipeQuery;
+public class MainActivity extends BaseActivity implements View.OnClickListener {
+
+    private static ProductAdapter productListAdapter;
+    private static ListView productListView;
+    private static OrmHelper ormHelper;
+
+    public static final String TAG = "TAG";
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        context = this;
         Stetho.initialize(Stetho.newInitializerBuilder(this).enableDumpapp(Stetho.defaultDumperPluginsProvider(this)).enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this)).build());
-
-
         setContentView(R.layout.activity_main);
-        initRequests();
+        initDB();
+        productListView = (ListView) findViewById(R.id.listViewProducts);
+        productListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        productListView.setMultiChoiceModeListener(new MultiChoiceImpl(productListView));
+        productListAdapter = new ProductAdapter(this);
+        productListView.setAdapter(productListAdapter);
 
-        recipeListView = (ListView) findViewById(R.id.listViewRecipes);
-        recipeListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        recipeListView.setAdapter(recipeListAdapter);
+        /*addBut = (Button) findViewById(R.id.add_but);
+        addText = (EditText) findViewById(R.id.add_text);
+        addCountText = (EditText) findViewById(R.id.add_count);
+        addLikeCountText = (EditText) findViewById(R.id.add_like_count);
+        addBut.setOnClickListener(this);*/
 
-        recipeSearchRequest.query = "meat";
-        int version = 2;
-        getSpiceManager().execute(recipeSearchRequest, "recipeList_" + version + "_" + recipeSearchRequest.query, DurationInMillis.ONE_WEEK, new RecipeListRequestListener());
+        FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.add_but);
+        addButton.setColorNormalResId(R.color.pink);
+        addButton.setColorPressedResId(R.color.pink_pressed);
+        //button.setIcon(R.drawable.ic_fab_star);
+        addButton.setStrokeVisible(false);
+        addButton.setOnClickListener(this);
 
+        FloatingActionButton searchButton = (FloatingActionButton) findViewById(R.id.search_but);
+        searchButton.setColorNormalResId(R.color.pink);
+        searchButton.setColorPressedResId(R.color.pink_pressed);
+        //button.setIcon(R.drawable.ic_fab_star);
+        searchButton.setStrokeVisible(false);
+        searchButton.setOnClickListener(this);
+
+        fillProductList();
     }
 
-    private void initRequests() {
-        recipeSearchRequest = new GetRecipeSearchRequest();
-    }
-
-    public final class RecipeListRequestListener implements
-            RequestListener<RecipeSearch> {
-
-        @Override
-        public void onRequestFailure(SpiceException spcExcptn) {
-            System.out.println("-------------------------------------");
-            spcExcptn.getCause().printStackTrace();
-            System.out.println("-------------------------------------");
+    public static void fillProductList() {
+        try {
+            ProductDao productDao = (ProductDao) ormHelper.getDaoByClass(Product.class);
+            productListAdapter.clear();
+            for (Product product : productDao.getAllProducts()) {
+                productListAdapter.add(product);
+            }
+        } catch (SQLException e) {
+            Log.e(TAG, e.getMessage());
         }
+    }
 
-        @Override
-        public void onRequestSuccess(RecipeSearch recipeSearch) {
-            RecipeList recipeList = recipeSearch.getRecipeList();
-            //String msg = "Recipes Obtained: " + recipes.size();
-            //Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT).show();
-            if (recipeListView != null) {
-                fillProductList(recipeList);
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.add_but:
+                openAddDialog();
+                break;
+
+            case R.id.search_but:
+                List<String> selected = getSelectedItems();
+                String text = implode(" ", selected);
+                Intent i = new Intent(context, RecipesActivity.class);
+                i.putExtra("query", text);
+                context.startActivity(i);
+                break;
+        }
+    }
+
+    private void openAddDialog() {
+        LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.add_dialog, (ViewGroup) findViewById(R.id.add_dialog_linearlayout));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(R.string.product_add);
+        builder.setView(layout);
+        final EditText name = (EditText) layout.findViewById(R.id.add_text);
+        final EditText count = (EditText) layout.findViewById(R.id.add_count);
+        final EditText like_count = (EditText) layout.findViewById(R.id.add_like_count);
+
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                addProduct(name.getText().toString(), Integer.parseInt(count.getText().toString()), Integer.parseInt(like_count.getText().toString()));
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    public void addProduct(String name, int count, int likeCount) {
+        Log.v(TAG, "Adding " + name);
+
+        Product product = new Product();
+        product.name = name;
+        product.count = count;
+        product.like_count = likeCount;
+
+        try {
+            ProductDao productDao = (ProductDao) ormHelper.getDaoByClass(Product.class);
+            productDao.create(product);
+            fillProductList();
+        } catch (SQLException e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    public static void updateProduct(Product product) {
+        try {
+            if (product.count < 0)
+                return;
+            ProductDao productDao = (ProductDao) ormHelper.getDaoByClass(Product.class);
+            productDao.update(product);
+            MainActivity.fillProductList();
+        } catch (SQLException e) {
+            Log.e(MainActivity.TAG, e.getMessage());
+        }
+    }
+
+    private void initDB() {
+        ormHelper = OpenHelperManager.getHelper(context, OrmHelper.class);
+    }
+
+    public static List<String> getSelectedItems() {
+        List<String> selectedItems = new ArrayList<>();
+
+        SparseBooleanArray sparseBooleanArray = productListView.getCheckedItemPositions();
+        for (int i = 0; i < sparseBooleanArray.size(); i++) {
+            if (sparseBooleanArray.valueAt(i)) {
+                Product selectedItem = (Product) productListView.getItemAtPosition(sparseBooleanArray.keyAt(i));
+                selectedItems.add(selectedItem.name);
             }
         }
-
-        private void fillProductList(RecipeList recipe_objs) {
-            recipeListAdapter.clear();
-            for (RecipeObj recipe_obj : recipe_objs) {
-                recipeListAdapter.add(recipe_obj.getRecipe().getLabel());
-            }
-        }
+        return selectedItems;
     }
 
+    public static String implode(String glue, List<String> strArray)
+    {
+        String ret = "";
+        for(int i=0;i<strArray.size();i++)
+        {
+            ret += (i == strArray.size() - 1) ? strArray.get(i) : strArray.get(i) + glue;
+        }
+        return ret;
+    }
 }

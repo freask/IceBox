@@ -20,6 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RecipesActivity"
+            android:label="@string/recipes" >
+        </activity>
         <service android:name="ru.freask.studyjam.icebox.http.ClientService" android:exported="false" />
     </application>
 
