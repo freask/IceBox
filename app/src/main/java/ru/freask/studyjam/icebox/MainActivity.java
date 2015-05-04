@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         initDB();
         productListView = (ListView) findViewById(R.id.listViewProducts);
-        productListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        productListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         productListView.setMultiChoiceModeListener(new MultiChoiceImpl(productListView));
         productListAdapter = new ProductAdapter(this);
         productListView.setAdapter(productListAdapter);

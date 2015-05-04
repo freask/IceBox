@@ -23,6 +23,8 @@ import ru.freask.studyjam.icebox.db.OrmHelper;
 import ru.freask.studyjam.icebox.db.ProductDao;
 import ru.freask.studyjam.icebox.models.Product;
 
+import static ru.freask.studyjam.icebox.R.color.*;
+
 
 public class ProductAdapter extends ArrayAdapter<Product> {
     Context context;
@@ -78,7 +80,6 @@ public class ProductAdapter extends ArrayAdapter<Product> {
             holder.count = (TextView) convertView.findViewById(R.id.count);
             holder.minus = (Button) convertView.findViewById(R.id.minus);
             holder.plus = (Button) convertView.findViewById(R.id.plus);
-            holder.checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
             holder.indicator = convertView.findViewById(R.id.item_image);
             holder.indicator.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,6 +89,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
                 private void selectRow(View v) {
                     parentView.setItemChecked(position, !isItemChecked(position));
+                    v.findViewById(R.id.item_image).setBackgroundColor(context.getResources().getColor(!isItemChecked(position) ? transparent : half_black));
                 }
 
                 private boolean isItemChecked(int pos) {
@@ -102,7 +104,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         }
         Product product = getItem(position);
         holder.populateItem(product);
-        convertView.setBackgroundColor(context.getResources().getColor(product.count >= product.like_count ? R.color.green : R.color.red));
+        convertView.setBackgroundColor(context.getResources().getColor(product.count >= product.like_count ? green : red));
         return convertView;
     }
 }
