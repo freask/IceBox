@@ -28,6 +28,7 @@ public class RecipesActivity extends BaseActivity {
 
         Stetho.initialize(Stetho.newInitializerBuilder(this).enableDumpapp(Stetho.defaultDumperPluginsProvider(this)).enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this)).build());
         setContentView(R.layout.activity_recipes);
+        navigationDrawerSetUp();
         initRequests();
 
         recipeListView = (ListView) findViewById(R.id.listViewRecipes);

@@ -2,10 +2,17 @@
     <string name="app_name">IceBox</string>
     <string name="product_add">Adding product</string>
     <string name="recipes">Recipes</string>
+    <string name="notice_add">Notification settings</string>
+    <string name="notice_activity_text">Show me notification every dat at:</string>
+    <string name="notice_off">Notifications are disabled</string>
+    <string name="notice_on">Notifications are enabled at %% every day</string>
+    <string name="notify_title">A reminder of purchases</string>
+    <string name="notify_text">You have to buy the following products:</string>
 
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
+
+    <string name="title_section1">Products</string>
+    <string name="title_section2">Notifications</string>
     <string name="title_section3">Section 3</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -20,11 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".RecipesActivity"
-            android:label="@string/recipes" >
-        </activity>
+        <activity android:name=".RecipesActivity" android:label="@string/recipes" />
+        <activity android:name=".NoticeActivity" android:label="@string/notice_add" />
         <service android:name="ru.freask.studyjam.icebox.http.ClientService" android:exported="false" />
+
+        <receiver android:name=".recivers.AlarmNotification" />
     </application>
 
 </manifest>

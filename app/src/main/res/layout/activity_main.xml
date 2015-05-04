@@ -7,47 +7,57 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- As the main content view, the view below consumes the entire
-         space available using match_parent in both dimensions. -->
-    <RelativeLayout
-        android:id="@+id/container"
+    <FrameLayout
+        android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <TextView
-            android:id="@+id/app_title"
+        <RelativeLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:gravity="center"
-            android:padding="10dp" />
+            android:layout_height="match_parent" >
 
-        <ListView
-            android:layout_below="@+id/app_title"
-            android:id="@+id/listViewProducts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </ListView>
+            <TextView
+                android:id="@+id/app_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:gravity="center"
+                android:padding="10dp" />
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_but"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title = "+"
+            <ListView
+                android:layout_below="@+id/app_title"
+                android:id="@+id/listViewProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView>
 
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_but"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_title = "+"
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/search_but"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_title = "+"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            />
-    </RelativeLayout>
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/search_but"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_title = "+"
+
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                />
+        </RelativeLayout>
+
+    </FrameLayout>
+
+    <fragment android:id="@+id/navigation_drawer"
+        android:layout_width="@dimen/navigation_drawer_width" android:layout_height="match_parent"
+        android:layout_gravity="start" android:name="ru.freask.studyjam.icebox.NavigationDrawerFragment"
+        tools:layout="@layout/fragment_navigation_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

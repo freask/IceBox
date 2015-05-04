@@ -47,18 +47,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         context = this;
         Stetho.initialize(Stetho.newInitializerBuilder(this).enableDumpapp(Stetho.defaultDumperPluginsProvider(this)).enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this)).build());
         setContentView(R.layout.activity_main);
+        navigationDrawerSetUp();
         initDB();
         productListView = (ListView) findViewById(R.id.listViewProducts);
         productListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         productListView.setMultiChoiceModeListener(new MultiChoiceImpl(productListView));
         productListAdapter = new ProductAdapter(this);
         productListView.setAdapter(productListAdapter);
-
-        /*addBut = (Button) findViewById(R.id.add_but);
-        addText = (EditText) findViewById(R.id.add_text);
-        addCountText = (EditText) findViewById(R.id.add_count);
-        addLikeCountText = (EditText) findViewById(R.id.add_like_count);
-        addBut.setOnClickListener(this);*/
 
         FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.add_but);
         addButton.setColorNormalResId(R.color.pink);

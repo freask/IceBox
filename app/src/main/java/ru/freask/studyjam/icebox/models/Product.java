@@ -10,8 +10,9 @@ import java.util.ArrayList;
  */
 @DatabaseTable(tableName = "Product")
 public class Product {
-
-
+    public static final String NAME_FIELD_NAME = "name";
+    public static final String NAME_FIELD_COUNT = "count";
+    public static final String NAME_FIELD_LIKECOUNT = "like_count";
 
     @DatabaseField(generatedId = true)
     private Long id;
