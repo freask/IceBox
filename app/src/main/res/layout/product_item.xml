@@ -4,13 +4,16 @@
     android:orientation="horizontal"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
+    <ImageButton
         android:id="@+id/item_image"
+        android:src="@drawable/galka_transp"
+        android:background="@color/transparent"
+        android:layout_gravity="center_vertical"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_margin="5dp"
@@ -25,16 +28,15 @@
         android:layout_height="wrap_content"
         android:layout_weight="40"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/minus"
+        android:src="@drawable/minus"
         android:layout_height="40dp"
         android:layout_width="40dp"
         android:layout_gravity="center_vertical"
-        android:textSize="35sp"
-        android:padding="0dp"
+        android:padding="5dp"
         android:layout_margin="0dp"
-        android:gravity="center"
-        android:text="-" />
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/count"
@@ -46,15 +48,15 @@
         android:paddingRight="10dp"
         android:layout_height="wrap_content" />
 
-    <Button
+    <ImageButton
         android:id="@+id/plus"
+        android:src="@drawable/plus"
         android:layout_height="40dp"
         android:layout_width="40dp"
         android:layout_gravity="center_vertical"
         android:textSize="35sp"
-        android:padding="0dp"
+        android:padding="5dp"
         android:layout_margin="0dp"
-        android:gravity="center"
-        android:text="+" />
+        android:gravity="center" />
 
 </LinearLayout>

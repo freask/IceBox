@@ -40,6 +40,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String TAG = "TAG";
     Context context;
+    private static FloatingActionButton searchButton, addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,17 +56,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         productListAdapter = new ProductAdapter(this);
         productListView.setAdapter(productListAdapter);
 
-        FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.add_but);
-        addButton.setColorNormalResId(R.color.pink);
-        addButton.setColorPressedResId(R.color.pink_pressed);
-        //button.setIcon(R.drawable.ic_fab_star);
+        addButton = (FloatingActionButton) findViewById(R.id.add_but);
         addButton.setStrokeVisible(false);
         addButton.setOnClickListener(this);
 
-        FloatingActionButton searchButton = (FloatingActionButton) findViewById(R.id.search_but);
-        searchButton.setColorNormalResId(R.color.pink);
-        searchButton.setColorPressedResId(R.color.pink_pressed);
-        //button.setIcon(R.drawable.ic_fab_star);
+        searchButton = (FloatingActionButton) findViewById(R.id.search_but);
         searchButton.setStrokeVisible(false);
         searchButton.setOnClickListener(this);
 
@@ -79,6 +74,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             for (Product product : productDao.getAllProducts()) {
                 productListAdapter.add(product);
             }
+            if (productListView.getCount() == 0)
+                searchButton.setVisibility(View.GONE);
+            else
+                searchButton.setVisibility(View.VISIBLE);
         } catch (SQLException e) {
             Log.e(TAG, e.getMessage());
         }

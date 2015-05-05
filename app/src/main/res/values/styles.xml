@@ -4,7 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
     </style>
-    <color name="green">#00ff00</color>
+    <color name="green">#25B86D</color>
     <color name="red">#ff0000</color>
 
     <color name="transparent">#00000000</color>
@@ -17,4 +17,5 @@
     <color name="pink_pressed">#ec407a</color>
     <color name="blue_semi_transparent">#805677fc</color>
     <color name="blue_semi_transparent_pressed">#80738ffe</color>
+    <color name="light_blue">#29B0DD</color>
 </resources>

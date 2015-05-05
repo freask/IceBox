@@ -10,14 +10,16 @@ import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
+import ru.freask.studyjam.icebox.adapters.RecipesAdapter;
 import ru.freask.studyjam.icebox.http.requests.GetRecipeSearchRequest;
+import ru.freask.studyjam.icebox.models.Recipe;
 import ru.freask.studyjam.icebox.models.RecipeList;
 import ru.freask.studyjam.icebox.models.RecipeObj;
 import ru.freask.studyjam.icebox.models.RecipeSearch;
 
 public class RecipesActivity extends BaseActivity {
 
-    private ArrayAdapter<String> recipeListAdapter;
+    private RecipesAdapter recipeListAdapter;
     GetRecipeSearchRequest recipeSearchRequest;
     private ListView recipeListView;
     String recipeQuery;
@@ -32,7 +34,7 @@ public class RecipesActivity extends BaseActivity {
         initRequests();
 
         recipeListView = (ListView) findViewById(R.id.listViewRecipes);
-        recipeListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        recipeListAdapter = new RecipesAdapter(this);
         recipeListView.setAdapter(recipeListAdapter);
 
         Bundle bundle = getIntent().getExtras();
@@ -75,7 +77,7 @@ public class RecipesActivity extends BaseActivity {
         private void fillProductList(RecipeList recipe_objs) {
             recipeListAdapter.clear();
             for (RecipeObj recipe_obj : recipe_objs) {
-                recipeListAdapter.add(recipe_obj.getRecipe().getLabel());
+                recipeListAdapter.add(recipe_obj.getRecipe());
             }
         }
     }

@@ -64,7 +64,7 @@ public class BaseActivity extends ActionBarActivity implements NavigationDrawerF
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
         drawerList = (ListView) findViewById(R.id.navigation_drawer);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.content_frame);
+        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.container);
         if (((ViewGroup.MarginLayoutParams) frameLayout.getLayoutParams()).leftMargin == (int) getResources().getDimension(R.dimen.navigation_drawer_width)) {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN, drawerList);
             drawerLayout.setScrimColor(Color.TRANSPARENT);
@@ -78,10 +78,11 @@ public class BaseActivity extends ActionBarActivity implements NavigationDrawerF
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.green));
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(getTitle());
+        if (actionBar != null) {
+            actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.green));
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(getTitle());
+        }
     }
 
     @Override
@@ -90,24 +91,59 @@ public class BaseActivity extends ActionBarActivity implements NavigationDrawerF
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main, menu);
             restoreActionBar();
             return true;
         }
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragment newInstance(int sectionNumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        public PlaceholderFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.fragment_main, container, false);
+        }
+
+        @Override
+        public void onAttach(Activity activity) {
+            super.onAttach(activity);
+           /* ((MainActivity) activity).onSectionAttached(
+                    getArguments().getInt(ARG_SECTION_NUMBER));*/
+        }
+    }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-        /*FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
 
-*/
-        if (position == 1 || position == 2 || position == 3) {
+        if (position == 0 || position == 1) {
             Class cl;
             switch (position) {
                 case 1:

@@ -8,6 +8,9 @@
     <string name="notice_on">Notifications are enabled at %% every day</string>
     <string name="notify_title">A reminder of purchases</string>
     <string name="notify_text">You have to buy the following products:</string>
+    <string name="name_of_product">Type the product name</string>
+    <string name="real_count">Real count of product</string>
+    <string name="preffered_count">Preffered count of product</string>
 
 
 

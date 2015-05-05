@@ -1,26 +1,20 @@
 package ru.freask.studyjam.icebox.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
-import java.sql.SQLException;
-
 import ru.freask.studyjam.icebox.MainActivity;
 import ru.freask.studyjam.icebox.R;
 import ru.freask.studyjam.icebox.db.OrmHelper;
-import ru.freask.studyjam.icebox.db.ProductDao;
 import ru.freask.studyjam.icebox.models.Product;
 
 import static ru.freask.studyjam.icebox.R.color.*;
@@ -41,10 +35,9 @@ public class ProductAdapter extends ArrayAdapter<Product> {
     static class ViewHolder{
         TextView name;
         TextView count;
-        Button minus;
-        Button plus;
-        CheckBox checkBox;
-        View indicator;
+        ImageButton minus;
+        ImageButton plus;
+        ImageButton galka;
 
         void populateItem(final Product product) {
             name.setText(product.name);
@@ -78,10 +71,10 @@ public class ProductAdapter extends ArrayAdapter<Product> {
             holder = new ViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.name);
             holder.count = (TextView) convertView.findViewById(R.id.count);
-            holder.minus = (Button) convertView.findViewById(R.id.minus);
-            holder.plus = (Button) convertView.findViewById(R.id.plus);
-            holder.indicator = convertView.findViewById(R.id.item_image);
-            holder.indicator.setOnClickListener(new View.OnClickListener() {
+            holder.minus = (ImageButton) convertView.findViewById(R.id.minus);
+            holder.plus = (ImageButton) convertView.findViewById(R.id.plus);
+            holder.galka = (ImageButton) convertView.findViewById(R.id.item_image);
+            holder.galka.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     selectRow(v);
@@ -89,7 +82,8 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
                 private void selectRow(View v) {
                     parentView.setItemChecked(position, !isItemChecked(position));
-                    v.findViewById(R.id.item_image).setBackgroundColor(context.getResources().getColor(!isItemChecked(position) ? transparent : half_black));
+                    ImageButton galka = (ImageButton) v.findViewById(R.id.item_image);
+                    galka.setImageResource(!isItemChecked(position) ? R.drawable.galka_transp : R.drawable.galka);
                 }
 
                 private boolean isItemChecked(int pos) {

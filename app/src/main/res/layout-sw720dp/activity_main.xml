@@ -17,15 +17,10 @@
 
     </android.support.v4.widget.DrawerLayout>
     <FrameLayout
-        android:id="@+id/content_frame"
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/navigation_drawer_width">
-
-        <RelativeLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
 
             <TextView
                 android:id="@+id/app_title"
@@ -46,22 +41,17 @@
                 android:id="@+id/add_but"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_title = "+"
-
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                fab:fab_icon="@drawable/plus"
+                fab:fab_colorNormal="@color/green"
+                android:layout_gravity="bottom|right" />
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/search_but"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_title = "+"
-
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
+                fab:fab_icon="@drawable/lupa"
+                fab:fab_colorNormal="@color/light_blue"
+                android:layout_gravity="bottom|center"
                 />
-        </RelativeLayout>
-
     </FrameLayout>
 </FrameLayout>

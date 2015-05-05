@@ -8,46 +8,40 @@
     tools:context=".NoticeActivity">
 
     <FrameLayout
-        android:id="@+id/content_frame"
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
         <RelativeLayout
-            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            >
 
-            <CheckBox
-                android:padding="30dp"
-                android:id="@+id/checkBox"
-                android:text="@string/notice_activity_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp" />
+                <CheckBox
+                    android:padding="20dp"
+                    android:id="@+id/checkBox"
+                    android:text="@string/notice_activity_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-            <TimePicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/timePicker"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="49dp"
-                android:layout_below="@+id/checkBox"
-                android:timePickerMode="clock"
-                android:transitionGroup="true" />
+                <TimePicker
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/timePicker"
+                    android:layout_below="@+id/checkBox"
+                    android:timePickerMode="clock"
+                    android:transitionGroup="true" />
+            </RelativeLayout>
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/notice_save_but"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_title = "+"
-
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
+                fab:fab_icon="@drawable/galka"
+                fab:fab_colorNormal="@color/green"
+                android:layout_gravity="bottom|right"
                 />
-
-        </RelativeLayout>
-
     </FrameLayout>
 
     <fragment android:id="@+id/navigation_drawer"

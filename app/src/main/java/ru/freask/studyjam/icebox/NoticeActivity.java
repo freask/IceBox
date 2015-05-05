@@ -50,9 +50,6 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         sp = PreferenceManager.getDefaultSharedPreferences(this);
 
         FloatingActionButton searchButton = (FloatingActionButton) findViewById(R.id.notice_save_but);
-        searchButton.setColorNormalResId(R.color.pink);
-        searchButton.setColorPressedResId(R.color.pink_pressed);
-        //button.setIcon(R.drawable.ic_fab_star);
         searchButton.setStrokeVisible(false);
         searchButton.setOnClickListener(this);
 
