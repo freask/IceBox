@@ -91,10 +91,10 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmNotification.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT );
-// На случай, если мы ранее запускали активити, а потом поменяли время,
-// откажемся от уведомления
+// РќР° СЃР»СѓС‡Р°Р№, РµСЃР»Рё РјС‹ СЂР°РЅРµРµ Р·Р°РїСѓСЃРєР°Р»Рё Р°РєС‚РёРІРёС‚Рё, Р° РїРѕС‚РѕРј РїРѕРјРµРЅСЏР»Рё РІСЂРµРјСЏ,
+// РѕС‚РєР°Р¶РµРјСЃСЏ РѕС‚ СѓРІРµРґРѕРјР»РµРЅРёСЏ
         am.cancel(pendingIntent);
-// Устанавливаем разовое напоминание
+// РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЂР°Р·РѕРІРѕРµ РЅР°РїРѕРјРёРЅР°РЅРёРµ
         if (set) {
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.HOUR_OF_DAY, time.getCurrentHour());

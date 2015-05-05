@@ -24,16 +24,16 @@ public class MultiChoiceImpl implements ListView.MultiChoiceModeListener {
     }
 
     @Override
-    //Метод вызывается при любом изменении состояния выделения рядов
+    //РњРµС‚РѕРґ РІС‹Р·С‹РІР°РµС‚СЃСЏ РїСЂРё Р»СЋР±РѕРј РёР·РјРµРЅРµРЅРёРё СЃРѕСЃС‚РѕСЏРЅРёСЏ РІС‹РґРµР»РµРЅРёСЏ СЂСЏРґРѕРІ
     public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
         Log.d(MainActivity.TAG, "onItemCheckedStateChanged");
         int selectedCount = listView.getCheckedItemCount();
-        //Добавим количество выделенных рядов в Context Action Bar
+        //Р”РѕР±Р°РІРёРј РєРѕР»РёС‡РµСЃС‚РІРѕ РІС‹РґРµР»РµРЅРЅС‹С… СЂСЏРґРѕРІ РІ Context Action Bar
         setSubtitle(actionMode, selectedCount);
     }
 
     @Override
-    //Здесь надуваем CAB из xml
+    //Р—РґРµСЃСЊ РЅР°РґСѓРІР°РµРј CAB РёР· xml
     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
         Log.d(MainActivity.TAG, "onCreateActionMode");
         /*MenuInflater inflater = actionMode.getMenuInflater();
@@ -48,7 +48,7 @@ public class MultiChoiceImpl implements ListView.MultiChoiceModeListener {
     }
 
     @Override
-    //Вызывается при клике на любой Item из СAB
+    //Р’С‹Р·С‹РІР°РµС‚СЃСЏ РїСЂРё РєР»РёРєРµ РЅР° Р»СЋР±РѕР№ Item РёР· РЎAB
     public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
         String text = "Action - " + menuItem.getTitle() + " ; Selected items: " + MainActivity.getSelectedItems();
         Toast.makeText(listView.getContext(), text, Toast.LENGTH_LONG).show();

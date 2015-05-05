@@ -37,7 +37,7 @@ public class AlarmNotification extends BroadcastReceiver {
         Log.v(MainActivity.TAG, "AlarmNotification OnReceive") ;
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         //Notification notification = new Notification(android.R.drawable.sym_def_app_icon, context.getResources().getString(R.string.notify_title), System.currentTimeMillis());
-//Интент для активити, которую мы хотим запускать при нажатии на уведомление
+//РРЅС‚РµРЅС‚ РґР»СЏ Р°РєС‚РёРІРёС‚Рё, РєРѕС‚РѕСЂСѓСЋ РјС‹ С…РѕС‚РёРј Р·Р°РїСѓСЃРєР°С‚СЊ РїСЂРё РЅР°Р¶Р°С‚РёРё РЅР° СѓРІРµРґРѕРјР»РµРЅРёРµ
 
         String notify_text = context.getResources().getString(R.string.notify_text) + " " + getNeededProductsString();
         Notification notification = new Notification.Builder(context)
@@ -56,14 +56,14 @@ public class AlarmNotification extends BroadcastReceiver {
                         PendingIntent.FLAG_CANCEL_CURRENT));
         notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
         nm.notify(1, notification);
-// Установим следующее напоминание.
+        // РЈСЃС‚Р°РЅРѕРІРёРј СЃР»РµРґСѓСЋС‰РµРµ РЅР°РїРѕРјРёРЅР°РЅРёРµ.
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT);
         am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
-    //получение списка продуктов, которые надо прикупить
+    //РїРѕР»СѓС‡РµРЅРёРµ СЃРїРёСЃРєР° РїСЂРѕРґСѓРєС‚РѕРІ, РєРѕС‚РѕСЂС‹Рµ РЅР°РґРѕ РїСЂРёРєСѓРїРёС‚СЊ
     private static String getNeededProductsString() {
         try {
             ProductDao productDao = (ProductDao) ormHelper.getDaoByClass(Product.class);
