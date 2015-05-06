@@ -45,10 +45,11 @@
         tools:text="1"
         android:textSize="25sp"
         android:layout_gravity="center_vertical"
-        android:layout_width="40dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_height="wrap_content" />
+        android:gravity="center"
+        android:layout_width="50dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:layout_height="35dp" />
 
     <ImageButton
         android:id="@+id/plus"

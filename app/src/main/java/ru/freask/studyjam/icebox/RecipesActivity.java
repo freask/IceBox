@@ -70,7 +70,7 @@ public class RecipesActivity extends BaseActivity {
         {
             return;
         }
-        Log.v(MainActivity.TAG, recipeSearchRequest.query);
+        Log.v(MainActivity.TAG, "QUERY = " + recipeSearchRequest.query);
         int version = 2;
         getSpiceManager().execute(recipeSearchRequest, "recipeList_" + version + "_" + recipeSearchRequest.query, DurationInMillis.ONE_WEEK, new RecipeListRequestListener());
 

@@ -69,6 +69,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public static void fillProductList() {
         try {
+            Log.v(TAG, "fillProductList");
             ProductDao productDao = (ProductDao) ormHelper.getDaoByClass(Product.class);
             productListAdapter.clear();
             for (Product product : productDao.getAllProducts()) {
@@ -114,7 +115,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                addProduct(name.getText().toString(), Integer.parseInt(count.getText().toString()), Integer.parseInt(like_count.getText().toString()));
+                String name_str = name.getText().toString();
+                String count_str = count.getText().toString();
+                String like_count_str = like_count.getText().toString();
+
+                if (!name_str.equals("") && !count_str.equals("") && !like_count_str.equals(""))
+                    addProduct(name_str, Integer.parseInt(count_str), Integer.parseInt(like_count_str));
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -138,7 +144,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         try {
             ProductDao productDao = (ProductDao) ormHelper.getDaoByClass(Product.class);
             productDao.create(product);
-            fillProductList();
+            productListAdapter.add(product);
         } catch (SQLException e) {
             Log.e(TAG, e.getMessage());
         }
@@ -193,3 +199,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         return ret;
     }
 }
+
+/* TODO
+*  - доработка поиска новодобавленных
+*  - сохранять значение галочек при повороте устройства
+*  - сохранять диалоги и тексты в них при повороте
+*  - сохранение при возврате после скрытия или сна
+*  - обработка запросов из API при повороте экрана
+*  - обфускация
+*  - ShareActionProvider (поделиться рецептом)
+* */
+
+

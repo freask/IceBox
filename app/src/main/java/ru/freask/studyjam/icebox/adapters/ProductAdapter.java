@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,6 +98,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
                 private void selectRow(View v) {
                     parentView.setItemChecked(position, !isItemChecked(position));
+                    Log.v(MainActivity.TAG, "checked (" + !isItemChecked(position) + ") = "+ position);
                     ImageButton galka = (ImageButton) v.findViewById(R.id.item_image);
                     galka.setImageResource(!isItemChecked(position) ? R.drawable.galka_transp : R.drawable.galka);
                 }

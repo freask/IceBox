@@ -14,7 +14,7 @@ import roboguice.util.temp.Ln;
  * Created by Alexander.Kashin01 on 30.04.2015.
  */
 public class ClientService extends RetrofitGsonSpiceService {
-    public static final Boolean DEBUG = true;
+    public static final Boolean DEBUG = false;
     public static final String API_URL = "https://api.edamam.com";
     public static final String API_URL_DEBUG = "http://appiwish.com";
     public static final String API_APP_ID = "72a4f9b7";
