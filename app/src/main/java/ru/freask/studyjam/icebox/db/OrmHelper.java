@@ -14,6 +14,7 @@ import java.sql.SQLException;
 
 import ru.freask.studyjam.icebox.Constants;
 import ru.freask.studyjam.icebox.models.Product;
+import ru.freask.studyjam.icebox.models.Recipe;
 
 /**
  * Created by FreaskHOME on 02.05.2015.
@@ -21,8 +22,10 @@ import ru.freask.studyjam.icebox.models.Product;
 public class OrmHelper extends OrmLiteSqliteOpenHelper {
     public static final String TAG = OrmHelper.class.getSimpleName();
     public static final int PRODUCT_DAO_NUM = 0;
+    private static final int RECIPE_DAO_NUM = 1;
     private Class[] classes = {
-            Product.class
+            Product.class,
+            Recipe.class
     };
     private SparseArray<CommonDao> daos;
     public OrmHelper(Context context) {
@@ -76,6 +79,9 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
     public CommonDao getDaoByClass(Class<?> classInstance) throws SQLException {
         if (classInstance.equals(Product.class)) {
             return getCustomDaoByNum(ProductDao.class, PRODUCT_DAO_NUM);
+        }
+        if (classInstance.equals(Recipe.class)) {
+            return getCustomDaoByNum(RecipeDao.class, RECIPE_DAO_NUM);
         }
         return null;
     }

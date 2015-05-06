@@ -19,8 +19,6 @@ public class ClientService extends RetrofitGsonSpiceService {
     public static final String API_URL_DEBUG = "http://appiwish.com";
     public static final String API_APP_ID = "72a4f9b7";
     public static final String API_APP_KEY = "ea9bfbb253b89e3b8fee9dcf6189351c";
-    private static final String DB_NAME = "icebox.db";
-    private static final Integer DB_VERSION = 1;
 
     @Override
     protected String getServerUrl() {
@@ -30,7 +28,7 @@ public class ClientService extends RetrofitGsonSpiceService {
     @Override
     public void onCreate() {
         super.onCreate();
-        //Ln.getConfig().setLoggingLevel(Log.VERBOSE);
+        Ln.getConfig().setLoggingLevel(Log.ERROR);
         addRetrofitInterface(RecipeService.class);
     }
 }

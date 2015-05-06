@@ -144,6 +144,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    public static void delProduct(long id) {
+        try {
+            ProductDao productDao = (ProductDao) ormHelper.getDaoByClass(Product.class);
+            productDao.deleteById(id);
+            fillProductList();
+        } catch (SQLException e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
     public static void updateProduct(Product product) {
         try {
             if (product.count < 0)

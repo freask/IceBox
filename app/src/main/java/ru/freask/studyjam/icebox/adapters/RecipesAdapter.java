@@ -22,12 +22,6 @@ import ru.freask.studyjam.icebox.db.OrmHelper;
 import ru.freask.studyjam.icebox.models.Product;
 import ru.freask.studyjam.icebox.models.Recipe;
 
-import static ru.freask.studyjam.icebox.R.color.green;
-import static ru.freask.studyjam.icebox.R.color.half_black;
-import static ru.freask.studyjam.icebox.R.color.red;
-import static ru.freask.studyjam.icebox.R.color.transparent;
-
-
 public class RecipesAdapter extends ArrayAdapter<Recipe> {
     Context context;
 
@@ -43,14 +37,6 @@ public class RecipesAdapter extends ArrayAdapter<Recipe> {
 
         void populateItem(Context context, final Recipe recipe) {
             name.setText(recipe.getLabel());
-
-            /*minus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });*/
-
             Picasso.with(context).load(recipe.getImage()).into(image);
         }
     }

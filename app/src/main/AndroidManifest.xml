@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".RecipesActivity" android:label="@string/recipes" />
         <activity android:name=".NoticeActivity" android:label="@string/notice_add" />
+        <activity android:name=".OneRecipeActivity" />
         <service android:name="ru.freask.studyjam.icebox.http.ClientService" android:exported="false" />
 
         <receiver android:name=".recivers.AlarmNotification" />

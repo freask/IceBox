@@ -6,6 +6,7 @@
     android:paddingBottom="5dp"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
+    tools:background="@color/green30"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -14,10 +15,10 @@
         android:src="@drawable/galka_transp"
         android:background="@color/transparent"
         android:layout_gravity="center_vertical"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_margin="5dp"
-        android:padding="10dp"/>
+        android:padding="5dp"/>
 
     <TextView
         android:id="@+id/name"
@@ -31,10 +32,11 @@
     <ImageButton
         android:id="@+id/minus"
         android:src="@drawable/minus"
-        android:layout_height="40dp"
-        android:layout_width="40dp"
+        android:layout_height="35dp"
+        android:layout_width="35dp"
         android:layout_gravity="center_vertical"
-        android:padding="5dp"
+
+        android:background="@color/green"
         android:layout_margin="0dp"
         android:gravity="center" />
 
@@ -51,12 +53,22 @@
     <ImageButton
         android:id="@+id/plus"
         android:src="@drawable/plus"
-        android:layout_height="40dp"
-        android:layout_width="40dp"
+        android:background="@color/green"
+        android:layout_height="35dp"
+        android:layout_width="35dp"
         android:layout_gravity="center_vertical"
-        android:textSize="35sp"
-        android:padding="5dp"
         android:layout_margin="0dp"
         android:gravity="center" />
 
+    <ImageButton
+        android:id="@+id/del"
+        android:src="@drawable/del"
+        android:layout_height="35dp"
+        android:layout_width="35dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/transparent"
+        android:paddingRight="2dp"
+        android:paddingBottom="2dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="center" />
 </LinearLayout>

@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
     </style>
     <color name="green">#25B86D</color>
-    <color name="red">#ff0000</color>
+    <color name="green30">#4425B86D</color>
 
     <color name="transparent">#00000000</color>
     <color name="black_semi_transparent">#B2000000</color>
@@ -14,6 +14,7 @@
     <color name="white">#fafafa</color>
     <color name="white_pressed">#f1f1f1</color>
     <color name="pink">#e91e63</color>
+    <color name="pink30">#44e91e63</color>
     <color name="pink_pressed">#ec407a</color>
     <color name="blue_semi_transparent">#805677fc</color>
     <color name="blue_semi_transparent_pressed">#80738ffe</color>

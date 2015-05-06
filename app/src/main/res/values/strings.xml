@@ -11,6 +11,11 @@
     <string name="name_of_product">Type the product name</string>
     <string name="real_count">Real count of product</string>
     <string name="preffered_count">Preffered count of product</string>
+    <string name="deleteAlert">Deleting</string>
+    <string name="ayousure">Are you sure?</string>
+    <string name="todelete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="open_url">Open in browser</string>
 
 
 
