@@ -90,6 +90,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
             holder.plus = (ImageButton) convertView.findViewById(R.id.plus);
             holder.del = (ImageButton) convertView.findViewById(R.id.del);
             holder.galka = (ImageButton) convertView.findViewById(R.id.item_image);
+            holder.galka.setImageResource(!isItemChecked(position, parentView) ? R.drawable.galka_transp : R.drawable.galka);
             holder.galka.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,15 +98,10 @@ public class ProductAdapter extends ArrayAdapter<Product> {
                 }
 
                 private void selectRow(View v) {
-                    parentView.setItemChecked(position, !isItemChecked(position));
-                    Log.v(MainActivity.TAG, "checked (" + !isItemChecked(position) + ") = "+ position);
+                    parentView.setItemChecked(position, !isItemChecked(position, parentView));
+                    Log.v(MainActivity.TAG, "checked (" + !isItemChecked(position, parentView) + ") = "+ position);
                     ImageButton galka = (ImageButton) v.findViewById(R.id.item_image);
-                    galka.setImageResource(!isItemChecked(position) ? R.drawable.galka_transp : R.drawable.galka);
-                }
-
-                private boolean isItemChecked(int pos) {
-                    SparseBooleanArray sparseBooleanArray = parentView.getCheckedItemPositions();
-                    return sparseBooleanArray.get(pos);
+                    galka.setImageResource(!isItemChecked(position, parentView) ? R.drawable.galka_transp : R.drawable.galka);
                 }
             });
 
@@ -117,6 +113,11 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         holder.populateItem(product);
         convertView.setBackgroundColor(context.getResources().getColor(product.count >= product.like_count ? green30 : pink30));
         return convertView;
+    }
+
+    private boolean isItemChecked(int pos, ListView parentView) {
+        SparseBooleanArray sparseBooleanArray = parentView.getCheckedItemPositions();
+        return sparseBooleanArray.get(pos);
     }
 
     private void deleteDialog(final long product_id) {

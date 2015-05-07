@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -16,7 +17,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
@@ -64,6 +67,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         searchButton.setOnClickListener(this);
 
         fillProductList();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     public static void fillProductList() {
@@ -201,9 +214,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 /* TODO
 *  - доработка поиска новодобавленных
-*  - сохранять значение галочек при повороте устройства
 *  - сохранять диалоги и тексты в них при повороте
-*  - сохранение при возврате после скрытия или сна
 *  - обработка запросов из API при повороте экрана
 *  - обфускация
 *  - ShareActionProvider (поделиться рецептом)
