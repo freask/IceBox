@@ -1,18 +1,14 @@
 package ru.freask.studyjam.icebox;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -22,15 +18,13 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
-import ru.freask.studyjam.icebox.adapters.ProductAdapter;
 import ru.freask.studyjam.icebox.recivers.AlarmNotification;
 
 /**
  * Created by FreaskHOME on 04.05.2015.
  */
-public class NoticeActivity extends BaseActivity implements View.OnClickListener, NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class NoticeActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String TAG = "TAG";
     Context context;
@@ -41,11 +35,10 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setActivityLayoutRes(R.layout.activity_notice);
         super.onCreate(savedInstanceState);
         context = this;
         Stetho.initialize(Stetho.newInitializerBuilder(this).enableDumpapp(Stetho.defaultDumperPluginsProvider(this)).enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this)).build());
-        setContentView(R.layout.activity_notice);
-        navigationDrawerSetUp();
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
 

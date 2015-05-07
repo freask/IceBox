@@ -44,11 +44,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setActivityLayoutRes(R.layout.activity_main);
         super.onCreate(savedInstanceState);
         context = this;
         Stetho.initialize(Stetho.newInitializerBuilder(this).enableDumpapp(Stetho.defaultDumperPluginsProvider(this)).enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this)).build());
-        setContentView(R.layout.activity_main);
-        navigationDrawerSetUp();
         initDB();
         productListView = (ListView) findViewById(R.id.listViewProducts);
         productListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);

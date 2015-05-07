@@ -35,10 +35,9 @@ public class OneRecipeActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setActivityLayoutRes(R.layout.activity_one_recipe);
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_one_recipe);
-        navigationDrawerSetUp();
         OrmHelper ormHelper = OpenHelperManager.getHelper(context, OrmHelper.class);
 
         Bundle bundle = getIntent().getExtras();

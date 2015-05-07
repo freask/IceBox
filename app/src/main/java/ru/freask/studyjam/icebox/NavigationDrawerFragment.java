@@ -1,35 +1,44 @@
 package ru.freask.studyjam.icebox;
 
-import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment implements NavigationDrawerCallbacks {
+
     /**
      * Remember the position of the selected item.
      */
@@ -49,18 +58,18 @@ public class NavigationDrawerFragment extends Fragment {
     /**
      * Helper component that ties the action bar to the navigation drawer.
      */
-    private ActionBarDrawerToggle mDrawerToggle;
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView;
+
+    private RecyclerView mDrawerList;
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+    private boolean isDrawerLocked = false;
 
-    public NavigationDrawerFragment() {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +78,7 @@ public class NavigationDrawerFragment extends Fragment {
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, true);
+        mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
@@ -78,39 +87,49 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        // Indicate that this fragment would like to influence the set of actions in the action bar.
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
-            }
-        });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
+        View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
 
-                }));
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+
+
+        mDrawerList = (RecyclerView) view.findViewById(R.id.drawerList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mDrawerList.setLayoutManager(layoutManager);
+        mDrawerList.setHasFixedSize(true);
+
+        final List<NavigationItem> navigationItems = getMenu();
+        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(navigationItems);
+        adapter.setNavigationDrawerCallbacks(this);
+        mDrawerList.setAdapter(adapter);
+        //selectItem(mCurrentSelectedPosition);
+        return view;
     }
 
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+    }
+
+    public ActionBarDrawerToggle getActionBarDrawerToggle() {
+        return mActionBarDrawerToggle;
+    }
+
+    public DrawerLayout getDrawerLayout() {
+        return mDrawerLayout;
+    }
+
+    @Override
+    public void onNavigationDrawerItemSelected(int position) {
+        selectItem(position);
+    }
+
+    public List<NavigationItem> getMenu() {
+        List<NavigationItem> items = new ArrayList<NavigationItem>();
+        items.add(new NavigationItem(getResources().getString(R.string.title_section1), getResources().getDrawable(R.drawable.ic_menu_check)));
+        items.add(new NavigationItem(getResources().getString(R.string.title_section2), getResources().getDrawable(R.drawable.ic_menu_check)));
+        //items.add(new NavigationItem(getResources().getString(R.string.title_section3), getResources().getDrawable(R.drawable.ic_menu_check)));
+        return items;
     }
 
     /**
@@ -118,55 +137,41 @@ public class NavigationDrawerFragment extends Fragment {
      *
      * @param fragmentId   The android:id of this fragment in its activity's layout.
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
+     * @param toolbar      The Toolbar of the activity.
      */
-    public void setUp(int fragmentId, DrawerLayout drawerLayout) {
+    public void setup(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar, FrameLayout frameLayout) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
 
-        // set a custom shadow that overlays the main content when the drawer opens
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        // set up the drawer's list view with items and click listener
+        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.greenDark));
 
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        if (((ViewGroup.MarginLayoutParams) frameLayout.getLayoutParams()).leftMargin == (int) getResources().getDimension(R.dimen.navigation_drawer_width)) {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+            isDrawerLocked = true;
+            mDrawerLayout.setScrimColor(Color.TRANSPARENT);
+            return; //чтобы не продолжать и отключить кнопку в экшнбаре
+        }
 
-        // ActionBarDrawerToggle ties together the the proper interactions
-        // between the navigation drawer and the action bar app icon.
-        mDrawerToggle = new ActionBarDrawerToggle(
-                getActivity(),                    /* host Activity */
-                mDrawerLayout,                    /* DrawerLayout object */
-                R.drawable.ic_drawer,             /* nav drawer image to replace 'Up' caret */
-                R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
-                R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
-        ) {
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                if (!isAdded()) {
-                    return;
-                }
+                if (!isAdded()) return;
 
-                getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+                getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                if (!isAdded()) {
-                    return;
-                }
-
+                if (!isAdded()) return;
                 if (!mUserLearnedDrawer) {
-                    // The user manually opened the drawer; store this flag to prevent auto-showing
-                    // the navigation drawer automatically in the future.
                     mUserLearnedDrawer = true;
                     SharedPreferences sp = PreferenceManager
                             .getDefaultSharedPreferences(getActivity());
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
                 }
-
-                getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+                getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
         };
 
@@ -180,24 +185,31 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.post(new Runnable() {
             @Override
             public void run() {
-                mDrawerToggle.syncState();
+                mActionBarDrawerToggle.syncState();
             }
         });
 
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
     }
 
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
-        }
-        if (mDrawerLayout != null) {
+        if (mDrawerLayout != null && !isDrawerLocked) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(position);
         }
+        ((NavigationDrawerAdapter) mDrawerList.getAdapter()).selectPosition(position);
+    }
+
+    public void openDrawer() {
+        mDrawerLayout.openDrawer(mFragmentContainerView);
+    }
+
+    public void closeDrawer() {
+        if (!isDrawerLocked)
+            mDrawerLayout.closeDrawer(mFragmentContainerView);
     }
 
     @Override
@@ -226,50 +238,102 @@ public class NavigationDrawerFragment extends Fragment {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // Forward the new configuration the drawer toggle component.
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        mActionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // If the drawer is open, show the global app actions in the action bar. See also
-        // showGlobalContextActionBar, which controls the top-left area of the action bar.
-        if (mDrawerLayout != null && isDrawerOpen()) {
-            showGlobalContextActionBar();
+    public void setUserData(String user, String email, Bitmap avatar) {
+        //ImageView avatarContainer = (ImageView) mFragmentContainerView.findViewById(R.id.imgAvatar);
+        //((TextView) mFragmentContainerView.findViewById(R.id.txtUserEmail)).setText(email);
+        ((TextView) mFragmentContainerView.findViewById(R.id.txtUsername)).setText(user);
+        //avatarContainer.setImageDrawable(new RoundImage(avatar));
+    }
+
+    public View getGoogleDrawer() {
+        return mFragmentContainerView.findViewById(R.id.googleDrawer);
+    }
+    public void setDrawerLocked(boolean val) {
+        isDrawerLocked = val;
+    }
+
+    public static class RoundImage extends Drawable {
+        private final Bitmap mBitmap;
+        private final Paint mPaint;
+        private final RectF mRectF;
+        private final int mBitmapWidth;
+        private final int mBitmapHeight;
+
+        public RoundImage(Bitmap bitmap) {
+            mBitmap = bitmap;
+            mRectF = new RectF();
+            mPaint = new Paint();
+            mPaint.setAntiAlias(true);
+            mPaint.setDither(true);
+            final BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            mPaint.setShader(shader);
+
+            mBitmapWidth = mBitmap.getWidth();
+            mBitmapHeight = mBitmap.getHeight();
         }
-        super.onCreateOptionsMenu(menu, inflater);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
+        @Override
+        public void draw(Canvas canvas) {
+            canvas.drawOval(mRectF, mPaint);
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+        @Override
+        protected void onBoundsChange(Rect bounds) {
+            super.onBoundsChange(bounds);
+            mRectF.set(bounds);
+        }
 
-    /**
-     * Per the navigation drawer design guidelines, updates the action bar to show the global app
-     * 'context', rather than just what's in the current screen.
-     */
-    private void showGlobalContextActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
-    }
+        @Override
+        public void setAlpha(int alpha) {
+            if (mPaint.getAlpha() != alpha) {
+                mPaint.setAlpha(alpha);
+                invalidateSelf();
+            }
+        }
 
-    private ActionBar getActionBar() {
-        return ((ActionBarActivity) getActivity()).getSupportActionBar();
-    }
+        @Override
+        public void setColorFilter(ColorFilter cf) {
+            mPaint.setColorFilter(cf);
+        }
 
-    /**
-     * Callbacks interface that all activities using this fragment must implement.
-     */
-    public static interface NavigationDrawerCallbacks {
-        /**
-         * Called when an item in the navigation drawer is selected.
-         */
-        void onNavigationDrawerItemSelected(int position);
+        @Override
+        public int getOpacity() {
+            return PixelFormat.TRANSLUCENT;
+        }
+
+        @Override
+        public int getIntrinsicWidth() {
+            return mBitmapWidth;
+        }
+
+        @Override
+        public int getIntrinsicHeight() {
+            return mBitmapHeight;
+        }
+
+        public void setAntiAlias(boolean aa) {
+            mPaint.setAntiAlias(aa);
+            invalidateSelf();
+        }
+
+        @Override
+        public void setFilterBitmap(boolean filter) {
+            mPaint.setFilterBitmap(filter);
+            invalidateSelf();
+        }
+
+        @Override
+        public void setDither(boolean dither) {
+            mPaint.setDither(dither);
+            invalidateSelf();
+        }
+
+        public Bitmap getBitmap() {
+            return mBitmap;
+        }
+
     }
 }
