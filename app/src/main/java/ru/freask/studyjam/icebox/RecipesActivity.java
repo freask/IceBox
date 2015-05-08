@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import com.facebook.stetho.Stetho;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
@@ -51,9 +52,17 @@ public class RecipesActivity extends BaseActivity {
                 Recipe recipe = (Recipe) recipeListView.getItemAtPosition(position);
                 try {
                     RecipeDao recipeDao = (RecipeDao) ormHelper.getDaoByClass(Recipe.class);
-                    recipeDao.create(recipe);
+                    Recipe recipeSearched = recipeDao.findRecipe(recipe.getLabel(), recipe.getUrl());
+                    int recipe_id;
+                    if (recipeSearched == null)
+                    {
+                        recipeDao.create(recipe);
+                        recipe_id = recipe.getId();
+                    } else {
+                        recipe_id = recipeSearched.getId();
+                    }
                     Intent i = new Intent(context, OneRecipeActivity.class);
-                    i.putExtra("recipe_id", recipe.getId());
+                    i.putExtra("recipe_id", recipe_id);
                     context.startActivity(i);
                 } catch (SQLException e) {
                     Log.e(MainActivity.TAG, e.getMessage());
@@ -62,13 +71,11 @@ public class RecipesActivity extends BaseActivity {
         });
 
         Bundle bundle = getIntent().getExtras();
-        if(bundle.getString("query")!= null)
+        if(bundle.getString("query")!= null && !bundle.getString("query").equals(""))
             recipeSearchRequest.query = bundle.getString("query");
         else
-        {
             return;
-        }
-        Log.v(MainActivity.TAG, "QUERY = " + recipeSearchRequest.query);
+
         int version = 2;
         getSpiceManager().execute(recipeSearchRequest, "recipeList_" + version + "_" + recipeSearchRequest.query, DurationInMillis.ONE_WEEK, new RecipeListRequestListener());
 
