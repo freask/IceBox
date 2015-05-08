@@ -2,7 +2,6 @@ package ru.freask.studyjam.icebox.adapters;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,7 +95,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
                 private void selectRow(View v) {
                     parentView.setItemChecked(position, !isItemChecked(position, parentView));
-                    Log.v(MainActivity.TAG, "checked (" + !isItemChecked(position, parentView) + ") = "+ position);
+                    MainActivity.updateSearchBut();
                     ImageButton galka = (ImageButton) v.findViewById(R.id.item_image);
                     galka.setImageResource(!isItemChecked(position, parentView) ? R.drawable.galka_transp : R.drawable.galka);
                 }

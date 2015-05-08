@@ -54,6 +54,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         searchButton.setOnClickListener(this);
 
         fillProductList();
+        updateSearchBut();
     }
 
     @Override
@@ -64,6 +65,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        updateSearchBut();
     }
 
     public static void fillProductList() {
@@ -165,13 +167,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
         return ret;
     }
+
+    public static void updateSearchBut() {
+        searchButton.setVisibility(getSelectedItems().size() > 0 ? View.VISIBLE : View.GONE);
+    }
 }
 
 /* TODO
 *  - доработка поиска новодобавленных
 *  - обработка запросов из API при повороте экрана
 *  - обфускация
-*  - скрывать кнопку поиска если нету галочек
 * */
 
 
