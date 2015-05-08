@@ -3,24 +3,16 @@ package ru.freask.studyjam.icebox;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.squareup.picasso.Picasso;
-
 import java.sql.SQLException;
-import java.util.List;
-
 import ru.freask.studyjam.icebox.db.OrmHelper;
-import ru.freask.studyjam.icebox.db.ProductDao;
 import ru.freask.studyjam.icebox.db.RecipeDao;
-import ru.freask.studyjam.icebox.models.Product;
 import ru.freask.studyjam.icebox.models.Recipe;
 
 /**
@@ -48,10 +40,8 @@ public class OneRecipeActivity extends BaseActivity implements View.OnClickListe
 
         try {
             RecipeDao recipeDao = (RecipeDao) ormHelper.getDaoByClass(Recipe.class);
-            Log.v(" ", "long " + Long.parseLong(recipe_id.toString()));
             recipe = recipeDao.queryForId(Long.parseLong(recipe_id.toString()));
         } catch (SQLException e) {
-            Log.e(MainActivity.TAG, e.getMessage());
             return;
         }
 

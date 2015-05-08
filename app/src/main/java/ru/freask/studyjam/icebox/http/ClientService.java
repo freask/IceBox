@@ -1,11 +1,6 @@
 package ru.freask.studyjam.icebox.http;
 
-import android.app.Application;
 import android.util.Log;
-
-import com.octo.android.robospice.persistence.CacheManager;
-import com.octo.android.robospice.persistence.exception.CacheCreationException;
-import com.octo.android.robospice.persistence.retrofit.GsonRetrofitObjectPersisterFactory;
 import com.octo.android.robospice.retrofit.RetrofitGsonSpiceService;
 
 import roboguice.util.temp.Ln;

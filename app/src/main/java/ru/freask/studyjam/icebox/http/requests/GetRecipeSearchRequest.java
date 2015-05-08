@@ -22,7 +22,6 @@ public class GetRecipeSearchRequest extends RetrofitSpiceRequest<RecipeSearch, R
     @Override
     public RecipeSearch loadDataFromNetwork() throws Exception {
         try {
-            Log.d(GetRecipeSearchRequest.class.getCanonicalName(), "Calling web service");
             RecipeSearch recipeSearch;
             if (ClientService.DEBUG)
                 recipeSearch = getService().recipeSearchDebug(ClientService.API_APP_ID, ClientService.API_APP_KEY, query);

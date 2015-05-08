@@ -12,7 +12,6 @@ import android.widget.CheckBox;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.facebook.stetho.Stetho;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
@@ -38,7 +37,6 @@ public class NoticeActivity extends BaseActivity implements View.OnClickListener
         setActivityLayoutRes(R.layout.activity_notice);
         super.onCreate(savedInstanceState);
         context = this;
-        Stetho.initialize(Stetho.newInitializerBuilder(this).enableDumpapp(Stetho.defaultDumperPluginsProvider(this)).enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this)).build());
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
 

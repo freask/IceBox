@@ -3,12 +3,10 @@ package ru.freask.studyjam.icebox;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ListView;
 
-import com.facebook.stetho.Stetho;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
@@ -37,7 +35,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setActivityLayoutRes(R.layout.activity_main);
         super.onCreate(savedInstanceState);
         context = this;
-        Stetho.initialize(Stetho.newInitializerBuilder(this).enableDumpapp(Stetho.defaultDumperPluginsProvider(this)).enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this)).build());
         initDB();
         productListView = (ListView) findViewById(R.id.listViewProducts);
         productListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -70,7 +67,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public static void fillProductList() {
         try {
-            Log.v(TAG, "fillProductList");
             ProductDao productDao = (ProductDao) ormHelper.getDaoByClass(Product.class);
             productListAdapter.clear();
             for (Product product : productDao.getAllProducts()) {
@@ -81,7 +77,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             else
                 searchButton.setVisibility(View.VISIBLE);
         } catch (SQLException e) {
-            Log.e(TAG, e.getMessage());
+
         }
     }
 
@@ -103,8 +99,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     public void addProduct(String name, int count, int likeCount) {
-        Log.v(TAG, "Adding " + name);
-
         Product product = new Product();
         product.name = name;
         product.count = count;
@@ -115,7 +109,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             productDao.create(product);
             productListAdapter.add(product);
         } catch (SQLException e) {
-            Log.e(TAG, e.getMessage());
+
         }
     }
 
@@ -125,7 +119,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             productDao.deleteById(id);
             fillProductList();
         } catch (SQLException e) {
-            Log.e(TAG, e.getMessage());
+
         }
     }
 
@@ -137,7 +131,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             productDao.update(product);
             MainActivity.fillProductList();
         } catch (SQLException e) {
-            Log.e(MainActivity.TAG, e.getMessage());
+
         }
     }
 
@@ -177,6 +171,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 *  - доработка поиска новодобавленных
 *  - обработка запросов из API при повороте экрана
 *  - обфускация
+*  - Названия с кавычкой. Ошибка при нажатии на рецепт в списке
 * */
 
 

@@ -2,7 +2,6 @@ package ru.freask.studyjam.icebox.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.util.SparseArray;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
@@ -38,10 +37,8 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {
-            Log.i(TAG, "onCreate");
             createAllTables(connectionSource);
         } catch (SQLException e) {
-            Log.e(TAG, "Can't create database", e);
             throw new RuntimeException(e);
         }
     }
@@ -53,11 +50,9 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
-            Log.i(TAG, "onUpgrade");
             dropAllTables(connectionSource);
             onCreate(db, connectionSource);
         } catch (SQLException e) {
-            Log.e(TAG, "Can't drop databases", e);
             throw new RuntimeException(e);
         }
     }
@@ -68,11 +63,9 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
     }
     public void clearDatabase() {
         try {
-            Log.i(TAG, "onClear");
             dropAllTables(connectionSource);
             createAllTables(connectionSource);
         } catch (SQLException e) {
-            Log.e(TAG, "Can't drop databases", e);
             throw new RuntimeException(e);
         }
     }

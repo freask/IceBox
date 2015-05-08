@@ -2,28 +2,21 @@ package ru.freask.studyjam.icebox;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.facebook.stetho.Stetho;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.stmt.QueryBuilder;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import ru.freask.studyjam.icebox.adapters.RecipesAdapter;
 import ru.freask.studyjam.icebox.db.OrmHelper;
-import ru.freask.studyjam.icebox.db.ProductDao;
 import ru.freask.studyjam.icebox.db.RecipeDao;
 import ru.freask.studyjam.icebox.http.requests.GetRecipeSearchRequest;
-import ru.freask.studyjam.icebox.models.Product;
 import ru.freask.studyjam.icebox.models.Recipe;
 import ru.freask.studyjam.icebox.models.RecipeList;
 import ru.freask.studyjam.icebox.models.RecipeObj;
@@ -40,7 +33,6 @@ public class RecipesActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setActivityLayoutRes(R.layout.activity_recipes);
         super.onCreate(savedInstanceState);
-        Stetho.initialize(Stetho.newInitializerBuilder(this).enableDumpapp(Stetho.defaultDumperPluginsProvider(this)).enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this)).build());
         initRequests();
         ormHelper = OpenHelperManager.getHelper(context, OrmHelper.class);
 
@@ -65,7 +57,7 @@ public class RecipesActivity extends BaseActivity {
                     i.putExtra("recipe_id", recipe_id);
                     context.startActivity(i);
                 } catch (SQLException e) {
-                    Log.e(MainActivity.TAG, e.getMessage());
+
                 }
             }
         });

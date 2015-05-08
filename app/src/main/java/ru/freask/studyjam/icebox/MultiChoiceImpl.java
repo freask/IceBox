@@ -26,7 +26,6 @@ public class MultiChoiceImpl implements ListView.MultiChoiceModeListener {
     @Override
     //Метод вызывается при любом изменении состояния выделения рядов
     public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
-        Log.d(MainActivity.TAG, "onItemCheckedStateChanged");
         int selectedCount = listView.getCheckedItemCount();
         //Добавим количество выделенных рядов в Context Action Bar
         setSubtitle(actionMode, selectedCount);
@@ -35,15 +34,11 @@ public class MultiChoiceImpl implements ListView.MultiChoiceModeListener {
     @Override
     //Здесь надуваем CAB из xml
     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-        Log.d(MainActivity.TAG, "onCreateActionMode");
-        /*MenuInflater inflater = actionMode.getMenuInflater();
-        inflater.inflate(R.menu.context_menu, menu);*/
         return true;
     }
 
     @Override
     public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-        Log.d(MainActivity.TAG, "onPrepareActionMode");
         return false;
     }
 
@@ -57,7 +52,7 @@ public class MultiChoiceImpl implements ListView.MultiChoiceModeListener {
 
     @Override
     public void onDestroyActionMode(ActionMode actionMode) {
-        Log.d(MainActivity.TAG, "onDestroyActionMode");
+
     }
 
     private void setSubtitle(ActionMode mode, int selectedCount) {

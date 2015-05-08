@@ -32,9 +32,6 @@ public class AlarmNotification extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         ormHelper = OpenHelperManager.getHelper(context, OrmHelper.class);
-
-
-        Log.v(MainActivity.TAG, "AlarmNotification OnReceive") ;
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         //Notification notification = new Notification(android.R.drawable.sym_def_app_icon, context.getResources().getString(R.string.notify_title), System.currentTimeMillis());
 //Интент для активити, которую мы хотим запускать при нажатии на уведомление
@@ -74,7 +71,6 @@ public class AlarmNotification extends BroadcastReceiver {
             }
             return MainActivity.implode(", ", products);
         } catch (SQLException e) {
-            Log.e(MainActivity.TAG, e.getMessage());
             return "";
         }
     }
