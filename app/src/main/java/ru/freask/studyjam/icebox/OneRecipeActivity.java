@@ -27,7 +27,7 @@ import ru.freask.studyjam.icebox.models.Recipe;
  * Created by Alexander.Kashin01 on 06.05.2015.
  */
 public class OneRecipeActivity extends BaseActivity implements View.OnClickListener {
-    Button openLink;
+    Button openLink, shareBut;
     TextView label, time, calories;
     ImageView image;
     Recipe recipe;
@@ -50,10 +50,6 @@ public class OneRecipeActivity extends BaseActivity implements View.OnClickListe
             RecipeDao recipeDao = (RecipeDao) ormHelper.getDaoByClass(Recipe.class);
             Log.v(" ", "long " + Long.parseLong(recipe_id.toString()));
             recipe = recipeDao.queryForId(Long.parseLong(recipe_id.toString()));
-
-
-
-
         } catch (SQLException e) {
             Log.e(MainActivity.TAG, e.getMessage());
             return;
@@ -64,7 +60,9 @@ public class OneRecipeActivity extends BaseActivity implements View.OnClickListe
         time = (TextView) findViewById(R.id.recipe_totalTime);
         calories = (TextView) findViewById(R.id.recipe_calories);
         openLink = (Button) findViewById(R.id.open_url);
+        shareBut = (Button) findViewById(R.id.share);
         openLink.setOnClickListener(this);
+        shareBut.setOnClickListener(this);
 
         Picasso.with(context).load(recipe.getImage()).into(image);
 
@@ -88,6 +86,13 @@ public class OneRecipeActivity extends BaseActivity implements View.OnClickListe
                 Uri address = Uri.parse(recipe.getUrl());
                 Intent openlink = new Intent(Intent.ACTION_VIEW, address);
                 startActivity(openlink);
+                break;
+            case R.id.share:
+                Intent It = new Intent();
+                It.setAction(Intent.ACTION_SEND);
+                It.setType("text/plain");
+                It.putExtra(android.content.Intent.EXTRA_TEXT, this.getString(R.string.share_text) + ' ' + recipe.getLabel() + ": " + recipe.getUrl());
+                startActivity(Intent.createChooser(It, this.getString(R.string.share)));
                 break;
         }
     }
