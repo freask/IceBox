@@ -171,6 +171,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 *  - доработка поиска новодобавленных
 *  - обработка запросов из API при повороте экрана
 *  - обфускация
+*  - скрывать кнопку поиска если нету галочек
 *  - ShareActionProvider (поделиться рецептом)
 *  - не множить записи в Recipe таблице
 * */

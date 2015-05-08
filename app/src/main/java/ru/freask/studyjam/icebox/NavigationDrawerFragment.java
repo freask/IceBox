@@ -148,7 +148,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         if (((ViewGroup.MarginLayoutParams) frameLayout.getLayoutParams()).leftMargin == (int) getResources().getDimension(R.dimen.navigation_drawer_width)) {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
             isDrawerLocked = true;
-            mDrawerLayout.setScrimColor(Color.TRANSPARENT);
+            mDrawerLayout.setScrimColor(getResources().getColor(R.color.NULL));
             return; //чтобы не продолжать и отключить кнопку в экшнбаре
         }
 
