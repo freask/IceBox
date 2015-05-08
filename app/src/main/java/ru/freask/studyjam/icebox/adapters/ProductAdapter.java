@@ -1,10 +1,7 @@
 package ru.freask.studyjam.icebox.adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -12,18 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-
-import java.util.List;
 
 import ru.freask.studyjam.icebox.MainActivity;
 import ru.freask.studyjam.icebox.R;
-import ru.freask.studyjam.icebox.RecipesActivity;
-import ru.freask.studyjam.icebox.db.OrmHelper;
+
+import ru.freask.studyjam.icebox.dialogs.DelDialogFragment;
 import ru.freask.studyjam.icebox.models.Product;
 
 import static ru.freask.studyjam.icebox.R.color.*;
@@ -31,10 +24,12 @@ import static ru.freask.studyjam.icebox.R.color.*;
 
 public class ProductAdapter extends ArrayAdapter<Product> {
     Context context;
+    FragmentManager fm;
 
-    public ProductAdapter(Context context) {
+    public ProductAdapter(Context context, FragmentManager fm) {
         super(context, android.R.layout.simple_list_item_1);
         this.context = context;
+        this.fm = fm;
     }
 
 
@@ -69,7 +64,9 @@ public class ProductAdapter extends ArrayAdapter<Product> {
             del.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    deleteDialog(product.getId());
+                    DelDialogFragment delDialogFragment = DelDialogFragment.newInstance(product.getId());
+                    delDialogFragment.show(fm, "del");
+                    //deleteDialog(product.getId());
                 }
             });
         }
@@ -119,27 +116,4 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         SparseBooleanArray sparseBooleanArray = parentView.getCheckedItemPositions();
         return sparseBooleanArray.get(pos);
     }
-
-    private void deleteDialog(final long product_id) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.deleteAlert)
-                .setMessage(R.string.ayousure)
-                .setCancelable(false)
-                .setPositiveButton(R.string.todelete,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                MainActivity.delProduct(product_id);
-                            }
-                        })
-                .setNegativeButton(R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-
 }

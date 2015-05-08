@@ -1,26 +1,12 @@
 package ru.freask.studyjam.icebox;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.view.ActionMode;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -33,6 +19,7 @@ import java.util.List;
 import ru.freask.studyjam.icebox.adapters.ProductAdapter;
 import ru.freask.studyjam.icebox.db.OrmHelper;
 import ru.freask.studyjam.icebox.db.ProductDao;
+import ru.freask.studyjam.icebox.dialogs.AddDialogFragment;
 import ru.freask.studyjam.icebox.models.Product;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -55,7 +42,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         productListView = (ListView) findViewById(R.id.listViewProducts);
         productListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         productListView.setMultiChoiceModeListener(new MultiChoiceImpl(productListView));
-        productListAdapter = new ProductAdapter(this);
+        productListAdapter = new ProductAdapter(this, getSupportFragmentManager());
         productListView.setAdapter(productListAdapter);
 
         addButton = (FloatingActionButton) findViewById(R.id.add_but);
@@ -100,7 +87,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add_but:
-                openAddDialog();
+                new AddDialogFragment().show(getSupportFragmentManager(), "add");
                 break;
 
             case R.id.search_but:
@@ -111,38 +98,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 context.startActivity(i);
                 break;
         }
-    }
-
-    private void openAddDialog() {
-        LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.add_dialog, (ViewGroup) findViewById(R.id.add_dialog_linearlayout));
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle(R.string.product_add);
-        builder.setView(layout);
-        final EditText name = (EditText) layout.findViewById(R.id.add_text);
-        final EditText count = (EditText) layout.findViewById(R.id.add_count);
-        final EditText like_count = (EditText) layout.findViewById(R.id.add_like_count);
-
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String name_str = name.getText().toString();
-                String count_str = count.getText().toString();
-                String like_count_str = like_count.getText().toString();
-
-                if (!name_str.equals("") && !count_str.equals("") && !like_count_str.equals(""))
-                    addProduct(name_str, Integer.parseInt(count_str), Integer.parseInt(like_count_str));
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
     }
 
     public void addProduct(String name, int count, int likeCount) {
@@ -214,7 +169,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 /* TODO
 *  - доработка поиска новодобавленных
-*  - сохранять диалоги и тексты в них при повороте
 *  - обработка запросов из API при повороте экрана
 *  - обфускация
 *  - ShareActionProvider (поделиться рецептом)
