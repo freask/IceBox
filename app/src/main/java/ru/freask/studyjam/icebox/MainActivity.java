@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
@@ -27,7 +28,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static OrmHelper ormHelper;
 
     public static final String TAG = "TAG";
-    Context context;
+    static Context context;
     private static FloatingActionButton searchButton, addButton;
 
     @Override
@@ -40,7 +41,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         productListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         productListView.setMultiChoiceModeListener(new MultiChoiceImpl(productListView));
         productListAdapter = new ProductAdapter(this, getSupportFragmentManager());
-        productListView.setAdapter(productListAdapter);
 
         addButton = (FloatingActionButton) findViewById(R.id.add_but);
         addButton.setStrokeVisible(false);
@@ -79,6 +79,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         } catch (SQLException e) {
 
         }
+        productListView.setAdapter(productListAdapter);
     }
 
     @Override
@@ -92,6 +93,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 List<String> selected = getSelectedItems();
                 String text = implode(" ", selected);
                 Intent i = new Intent(context, RecipesActivity.class);
+                Toast.makeText(context, "Searching: " + text, Toast.LENGTH_SHORT).show();
                 i.putExtra("query", text);
                 context.startActivity(i);
                 break;
@@ -107,10 +109,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         try {
             ProductDao productDao = (ProductDao) ormHelper.getDaoByClass(Product.class);
             productDao.create(product);
-            productListAdapter.add(product);
+            fillProductList();
         } catch (SQLException e) {
 
         }
+
     }
 
     public static void delProduct(long id) {
@@ -168,8 +171,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 }
 
 /* TODO
-*  - доработка поиска новодобавленных
-*  - обработка запросов из API при повороте экрана
 *  - обфускация
 *  - Названия с кавычкой. Ошибка при нажатии на рецепт в списке
 * */
